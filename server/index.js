@@ -1,9 +1,14 @@
 import express from 'express';
-import mongoose from 'mongoose';
+import Connection from './database/db.js';
+import DefaultData from './default.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 const app = express();
 const PORT = 8000;
-const URL = 'mongodb+srv://deeppatel:<deeppatel1204>@flipkart.ud4lx.mongodb.net/FLIPKART?retryWrites=true&w=majority';
-const Connection = (URL,(useNewUrlParser: true, useUnifiedTopolog:true,usefindAndModify:false))=>{
+const username  = process.env.db_use;
+const password  = process.env.db_pass;
 
-}
-app.listen(PORT,()=>console.log(`server is successfully running on ${PORT} `));
+Connection(username,password);
+app.listen(PORT,()=>console.log(`server is successfully running on ${PORT} `)) ;
+DefaultData();
