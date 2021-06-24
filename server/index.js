@@ -4,13 +4,13 @@ import DefaultData from './default.js';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import route from './rout/routs.js';
+import router from './rout/router.js';
 dotenv.config();
 const app = express();
 app.use(bodyParser.json({extended: true}))
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(cors());
-app.use('/',route);
+app.use('/',router);
 app.use('/signup' , ()=>{
 
 })
