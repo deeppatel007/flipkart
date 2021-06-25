@@ -98,7 +98,7 @@ const signupinitalvalues = {
     password:'',
     phone:'',
 };
-const Login = ({open,setOpen}) =>{
+const Login = ({open,setOpen,setAccount}) =>{
     const classes = useStyle();
     const [account,setaccount] =useState(initialValue.login);
     const [signup,setSignup] = useState(signupinitalvalues);
@@ -120,7 +120,7 @@ const Login = ({open,setOpen}) =>{
         if(!responce)return;
         
         handleClose();
-        setaccount(signup.username);
+        setAccount(signup.username);
 
     }
     
