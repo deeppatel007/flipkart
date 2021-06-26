@@ -5,6 +5,7 @@ import {Link} from  'react-router-dom';
 import LoginDialog from "../login/Login";
 import { useContext, useState } from "react";
 import {LoginContext} from '../context/ContextProvider'
+import Profile from "../header/Profile";
 const useStyle = makeStyles({
     login:{
         background:'#FFFFFF',
@@ -42,7 +43,7 @@ const HeaderButton = ()=>{
     const classes = useStyle();
     const [open,setOpen] = useState(false);
     const {account,setAccount} = useContext(LoginContext);
-
+    
     const openDialog =()=>
     {
         setOpen(true);
@@ -51,8 +52,7 @@ const HeaderButton = ()=>{
        
        <Box className={classes.wapper}>
            {
-               account ? <Typography>{account}</Typography>
-               : <Link>
+               account ? <Profile account={account} setAccount={setAccount}></Profile> :<Link>
                     <Button variant="contained" onClick={()=>openDialog()} className={classes.login}>Login</Button>
                 </Link>
            }

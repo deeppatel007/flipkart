@@ -2,7 +2,8 @@ import { Dialog,DialogContent } from "@material-ui/core";
 import { makeStyles, Box ,TextField,Button} from "@material-ui/core";
 import { Typography } from "@material-ui/core";
 import { useState } from "react";
-import { authanticateSignup } from "../service/api";
+import { authanticateSignup , authanticatelogin} from "../service/api";
+
 const useStyle = makeStyles({
     component:{
         height:"70vh",
@@ -29,7 +30,7 @@ const useStyle = makeStyles({
         flex: 1,
         flexDirection: 'column',
         '& > *':{
-            marginTop:20
+            marginTop:14
         }
         
     },  
@@ -67,6 +68,13 @@ const useStyle = makeStyles({
         fontWeight:600,
         cursor:'pointer',
 
+    },
+    error:{
+        fontSize:10,
+        color:'#ff6161',
+        marginTop:10,
+        fontWeight:600,
+        lineHeight:0
     }
 
 
@@ -98,10 +106,18 @@ const signupinitalvalues = {
     password:'',
     phone:'',
 };
+const logininitalvalues = {
+    username:'',
+    password:'',
+
+};
 const Login = ({open,setOpen,setAccount}) =>{
     const classes = useStyle();
     const [account,setaccount] =useState(initialValue.login);
     const [signup,setSignup] = useState(signupinitalvalues);
+    const [login,setLogin] = useState(logininitalvalues);
+    const [error,setError] = useState(false);
+
     const handleClose =()=>{
         setOpen(false);
         setaccount(initialValue.login);
@@ -114,6 +130,9 @@ const Login = ({open,setOpen,setAccount}) =>{
         setSignup({...signup,[e.target.name]: e.target.value});
         
     }
+    const onValueChange = (e) =>{
+        setLogin({...login,[e.target.name]: e.target.value});
+    }
     const signupuser = async () =>{
         let responce = await authanticateSignup(signup);
         
@@ -123,6 +142,17 @@ const Login = ({open,setOpen,setAccount}) =>{
         setAccount(signup.username);
 
     }
+    const loginuser = async () =>{
+        let responce = await authanticatelogin(login);
+        if(!responce)
+        {
+            setError(true);
+            return;
+        }
+        handleClose();
+        setAccount(login.username);
+
+    } 
     
     return(
         
@@ -138,10 +168,11 @@ const Login = ({open,setOpen,setAccount}) =>{
                     {
                         account.view === 'login' ?
                     <Box className={classes.login}>
-                        <TextField name='username' label='Enter Email/Mobile number'></TextField>
-                        <TextField name='password' label='Enter Password'></TextField>
+                        <TextField onChange={ (e) => onValueChange(e) } name='username' label='Enter Email/Mobile number'></TextField>
+                        <TextField onChange={ (e) => onValueChange(e) } name='password' label='Enter Password'></TextField>
+                        {error&&<Typography className={classes.error}>Invalid username or password</Typography>}
                         <Typography className={classes.txt} >By continuing, you agree to Flipkart's Terms of Use and Privacy Policy.</Typography>
-                        <Button variant="contained" className={classes.logbtn}>Login</Button>
+                        <Button onClick={()=>loginuser()} variant="contained" className={classes.logbtn}>Login</Button>
                         <Typography style={{textAlign:'center'}} className={classes.txt}>OR</Typography>
                         <Button variant="contained" className={classes.requestbtn}>Request OTP</Button>
                         <Typography onClick ={()=>toggleaccount()} className={classes.createtext}>New to Flipkart? Create an account</Typography>
